@@ -105,7 +105,7 @@ If you have an interesting feature in mind, that you would like to see in __ora*
 
 ## License
 
-__ora* CODECOP__ is released under the [MIT license](license.md).
+__ora* CODECOP__ is released under the [MIT license](LICENSE).
 
 ## Version History
 
