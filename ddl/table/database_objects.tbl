@@ -1,0 +1,12 @@
+create table database_objects(
+  doid                number(2,0)
+    primary key,
+  schema_scope        varchar2(30 char)
+    check ( schema_scope in ('Schema Object','Nonschema Object') ),
+  type_classification varchar2(30 char)
+    check ( type_classification in ('Database Object','SQL Data Object','PL/SQL Unit') ),
+  documentation_name  varchar2(30 char),
+--  dictionary_name     varchar2(30 char)
+  dictionary_name     varchar2(4000 char)
+    check ( dictionary_name = upper(dictionary_name) )
+); 

@@ -1,0 +1,7 @@
+comment on table sqale_characteristics is
+  'SQALE (Software Quality Assessment based on Lifecycle Expectations) is a method to support the evaluation of a software application source code.';
+---
+comment on column sqale_characteristics.scid is
+  'Numeric Primary key for the indices of SQALE characteristics.';
+comment on column sqale_characteristics.characteristic is
+  'The indices of SQALE characteristics.';

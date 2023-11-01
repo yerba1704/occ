@@ -1,0 +1,10 @@
+insert all
+  into sqale_characteristics values (1,'Changeability')
+  into sqale_characteristics values (2,'Efficiency')
+  into sqale_characteristics values (3,'Maintainability')
+  into sqale_characteristics values (4,'Portability')
+  into sqale_characteristics values (5,'Reliability')
+  into sqale_characteristics values (6,'Reusability')
+  into sqale_characteristics values (7,'Security')
+  into sqale_characteristics values (8,'Testability')
+select 1 from dual;

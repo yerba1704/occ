@@ -1,0 +1,4 @@
+create table severity_levels(
+  slid          number(1,0)       primary key,
+  severity      varchar2(15 char) not null
+);

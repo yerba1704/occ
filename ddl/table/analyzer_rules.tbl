@@ -1,0 +1,33 @@
+create table analyzer_rules(
+  arid              number(5,0)         
+    generated always as ( to_number( doid||lpad(rule_sequence,3,'0') ) )
+    primary key,
+  code              varchar2(64 char)   not null
+    unique
+    constraint code_value_are_upper_case check ( code = upper(code) ),
+  title             varchar2(255 char)  not null,
+  motivation        varchar2(4000 char) not null,
+  verification_sql  varchar2(4000 char) not null,
+  fix_hint          varchar2(4000 char)     null,
+  fix_automation_fl number(1,0)
+    default 0
+    constraint fix_automation_fl_value_is_1_or_0 check ( fix_automation_fl in (1,0) ),
+  rule_sequence     number(3,0)         not null,
+  doid              number(2,0)         not null
+    references database_objects (doid),
+  slid              number(1,0)         not null
+    references severity_levels (slid),
+  scid              number(1,0)         not null
+    references sqale_characteristics  (scid),
+  tags              varchar2(255 char)      null
+    constraint tags_values_are_lower_case check ( tags = lower(tags) ),
+  created_on        timestamp(6)
+    default systimestamp                not null,
+  created_by        varchar2(255 char)
+    default coalesce( sys_context('apex$session', 'app_user'),
+                      sys_context('userenv', 'os_user'),
+                      sys_context('userenv', 'session_user')
+                    )                   not null,
+  modified_on       timestamp(6)            null,
+  modified_by       varchar2(255 char)      null
+);

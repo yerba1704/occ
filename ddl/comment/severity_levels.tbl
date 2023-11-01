@@ -1,0 +1,7 @@
+comment on table severity_levels is
+  'Incident severity levels are a measurement of the impact an incident has on the business.';
+---
+comment on column severity_levels.slid is
+  'Five level scale.';
+comment on column severity_levels.severity is
+  'Severity Levels in five level scale.';

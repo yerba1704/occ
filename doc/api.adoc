@@ -1,0 +1,305 @@
+= API
+
+The `API` package contains all information to interact with `ora* CODECOP`. It is executable by all users and works with https://docs.oracle.com/en/database/oracle/oracle-database/23/lnpls/invokers_rights_clause.html#GUID-66745CF3-81D9-491B-BD49-E83E05A5C4E4[invokers rights].
+
+This chapter contains the following topics:
+
+* <<Datatypes>>
+* <<Constants>>
+* <<Exceptions>>
+* <<Summary of `API` Subprograms>>
+
+== Datatypes
+
+Parameters and Constants in the `API` package use these datatypes.
+
+|===
+|Name | Type
+
+|small_string
+|A string containing max. 20 chars (not nullable).
+
+|bool
+|A not nullable natural number between 0 and 1.
+|===
+
+== Constants
+
+The `API` package provides constants for rule objects, severities and characteristics.
+
+These constants are described in the following table.
+
+|===
+|Name | Value
+
+|PLSQL_UNIT
+|_'PLSQL_UNIT'_
+
+|SQL_DATA_OBJECT
+|_'SQL_DATA_OBJECT'_
+
+|DATABASE_OBJECT
+|_'DATABASE_OBJECT'_
+
+|BLOCKER
+|_'BLOCKER'_
+
+|CRITICAL
+|_'CRITICAL'_
+
+|MAJOR
+|_'MAJOR'_
+
+|MINOR
+|_'MINOR'_
+
+|INFO
+|_'INFO'_
+
+|CHANGEABILITY
+|_'CHANGEABILITY'_
+
+|EFFICIENCY
+|_'EFFICIENCY'_
+
+|MAINTAINABILITY
+|_'MAINTAINABILITY'_
+
+|PORTABILITY
+|_'PORTABILITY'_
+
+|RELIABILITY
+|_'RELIABILITY'_
+
+|REUSABILITY
+|_'REUSABILITY'_
+
+|SECURITY
+|_'SECURITY'_
+
+|TESTABILITY
+|_'TESTABILITY'_
+|===
+
+== Exceptions
+
+The following table lists exceptions that have been defined for `API`.
+
+|===
+|Exception | Code | Description
+
+|e_rule_failed
+|-20001
+|The rule failed because the specified SQL returned more than 0 rows.
+
+|e_invalid_rule_id
+|-20002
+|The given ID for the rule could not be found.
+
+|e_invalid_code
+|-20003
+|The given CODE for the rule could not be found.
+
+|e_invalid_value
+|-20004
+|The given VALUE for the rule_object, severity, characteristic or tag could not be found.
+|===
+
+== Summary of `API` Subprograms
+
+This table lists the `API` subprograms and briefly describes them.
+
+|===
+|Subprogram | Description
+
+|<<VERIFICATION_RESULT Function>>
+|Execute the sql statement from RULE_ID or CODE in RULESET.
+
+|<<CHECK_RULE Procedure>>
+|Verify the rule according to the RULE_ID or CODE in RULESET.
+
+|<<CHECK_RULE Function>>
+|Same as procedure <<CHECK_RULE Procedure>> but can be used in SQL.
+
+|<<CHECK_RULES Procedure>>
+|Verify all rules that belongs to one of the associated dimension (rule_object, characteristic, severity), a tag or to all defined rules.
+
+|<<CHECK_RULES Function>>
+|Same as procedure <<CHECK_RULES Procedure>> but can be used in SQL.
+|===
+
+=== VERIFICATION_RESULT Function
+
+Execute the sql statement from RULE_ID or CODE in RULESET.
+
+==== Syntax
+
+[source]
+....
+function verification_result(
+      i_rule_id_or_code in string)
+    return verification_result_c;
+....
+
+==== Parameters
+
+|===
+|Parameters | Description
+
+|i_rule_id_or_code
+|A valid RULE_ID or CODE from RULESET. If not valid exception e_invalid_rule_id or e_invalid_code is raised.
+|===
+
+==== Example
+
+[source,sql]
+----
+select * from occ.api.verification_result(i_rule_id_or_code => 'PARAMETER_NAMING_RULE');
+----
+
+=== CHECK_RULE Procedure
+
+Verify the rule according to the RULE_ID or CODE in RULESET.
+
+==== Syntax
+
+[source]
+....
+procedure check_rule(
+    i_rule_id_or_code in string,
+    i_verbose_mode    in boolean default true,
+    i_raise_if_fail   in boolean default false);
+....
+
+==== Parameters
+
+|===
+|Parameters | Description
+
+|i_rule_id_or_code
+|A valid RULE_ID or CODE from RULESET. If not valid exception e_invalid_rule_id or e_invalid_code is raised.
+
+|i_verbose_mode
+|Adjust the amount of details.
+
+|i_raise_if_fail
+|Raise an exception if a rule is failed.
+|===
+
+==== Example
+
+[source,sql]
+----
+exec occ.api.check_rule(i_rule_id_or_code => 'OCC-30010');
+----
+
+=== CHECK_RULE Function
+
+
+Verify all or a specific rule according to the RULE_ID or CODE in RULESET.
+
+==== Syntax
+
+[source]
+....
+function check_rule(
+    i_rule_id_or_code in string,
+    i_verbose_mode    in bool   default 1,
+    i_raise_if_fail   in bool   default 0)
+  return string_c;
+....
+
+==== Parameters
+
+|===
+|Parameters | Description
+
+|i_rule_id_or_code
+|A valid RULE_ID or CODE from RULESET. If not valid exception e_invalid_rule_id or e_invalid_code is raised.
+
+|i_verbose_mode
+|Adjust the amount of details.
+
+|i_raise_if_fail
+|Raise an exception if a rule is failed.
+|===
+
+==== Example
+
+[source,sql]
+----
+select * from occ.api.check_rule(i_rule_id_or_code => 'OCC-30010');
+----
+
+=== CHECK_RULES Procedure
+
+Verify all rules that belongs to one of the associated dimension (rule_object, characteristic, severity), a tag or to all defined rules.
+
+==== Syntax
+
+[source]
+....
+procedure check_rules(
+    i_value         in string  default null,
+    i_verbose_mode  in boolean default true,
+    i_raise_if_fail in boolean default false);
+....
+
+==== Parameters
+
+|===
+|Parameters | Description
+
+|i_value
+|One of the following rule_objects, severities, characteristics: PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT, INFO, MINOR, MAJOR, CRITICAL, BLOCKER, CHANGEABILITY, EFFICIENCY, MAINTAINABILITY,  PORTABILITY,  RELIABILITY,  REUSABILITY',  SECURITY, TESTABILITY or one of the defined TAGS (case insensitive). If a severity keyword is chosen, all severity levels greater or equal are used. If parameter is not valid exception e_invalid_value is raised. If parameter is NULL all available rules will verified.
+
+|i_verbose_mode
+|Adjust the amount of details.
+
+|i_raise_if_fail
+|Raise an exception if a rule is failed.
+|===
+
+==== Example
+
+[source,sql]
+----
+exec occ.api.check_rules(i_value => OCC.API.MAINTAINABILITY);
+----
+
+=== CHECK_RULES Function
+
+Verify all rules that belongs to one of the associated dimension (rule_object, characteristic, severity), a tag or to all defined rules.
+
+==== Syntax
+
+[source]
+....
+function check_rules(
+    i_value         in string default null,
+    i_verbose_mode  in bool   default 1,
+    i_raise_if_fail in bool   default 0)
+  return string_c;
+....
+
+==== Parameters
+
+|===
+|Parameters | Description
+
+|i_value
+|One of the following rule_objects, severities, characteristics: PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT, INFO, MINOR, MAJOR, CRITICAL, BLOCKER, CHANGEABILITY, EFFICIENCY, MAINTAINABILITY,  PORTABILITY,  RELIABILITY,  REUSABILITY',  SECURITY, TESTABILITY or one of the defined TAGS (case insensitive). If a severity keyword is chosen, all severity levels greater or equal are used. If parameter is not valid exception e_invalid_value is raised. If parameter is NULL all available rules will verified.
+
+|i_verbose_mode
+|Adjust the amount of details.
+
+|i_raise_if_fail
+|Raise an exception if a rule is failed.
+|===
+
+==== Example
+
+[source,sql]
+----
+select * from occ.api.check_rules(i_value => 'MAINTAINABILITY');
+----

@@ -1,0 +1,7 @@
+insert all
+  into severity_levels values (4,'Blocker')
+  into severity_levels values (3,'Critical')
+  into severity_levels values (2,'Major')
+  into severity_levels values (1,'Minor')
+  into severity_levels values (0,'Info')
+select 1 from dual;

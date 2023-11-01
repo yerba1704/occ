@@ -1,0 +1,35 @@
+comment on table analyzer_rules is
+  'List of rules to check.';
+---
+comment on column analyzer_rules.arid is
+  'Numeric primary key for the rule. Auto-generated as a five digit combination from doid and rule_sequence columns.';
+comment on column analyzer_rules.code is
+  'Unique short identifier code. Only alphanumeric characters, the underscore (_), dollar sign ($) and pound sign (#) are allowed.';
+comment on column analyzer_rules.title is
+  'Name of the rule.';
+comment on column analyzer_rules.motivation is
+  'Short description what is checked and why.';
+comment on column analyzer_rules.verification_sql is
+  'The SQL statement which returns rows in case of violation. Use DBA* dictionary views and the bind variable :OWNER (which will replace by the current user).';
+comment on column analyzer_rules.fix_hint is
+  'Either a human note or a executable statement like DDL, anonymous block or select statement. All attributes from RULE_RESULT_O object type can be used as bind variable and will be replaced at execution time.';
+comment on column analyzer_rules.fix_automation_fl is
+  'If the hint is a executable statement 1, if it is a human note than 0.';
+comment on column analyzer_rules.rule_sequence is
+  'Numeric sequence or order number for the rules in the doid group.';
+comment on column analyzer_rules.doid is
+  'Foreign key to table database_objects.';
+comment on column analyzer_rules.slid is
+  'Foreign key to table severity_levels.';
+comment on column analyzer_rules.scid is
+  'Foreign key to table sqale_characteristics.';
+comment on column analyzer_rules.tags is
+  'List of tags separated by ":" character.';
+comment on column analyzer_rules.created_on is
+  'Date when record was created.';
+comment on column analyzer_rules.created_by is
+  'Name of use who created the record.';
+comment on column analyzer_rules.modified_on is
+  'Date when record was last modified.';
+comment on column analyzer_rules.modified_by is
+  'Name of user who last modified the record.';

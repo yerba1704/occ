@@ -1,0 +1,108 @@
+insert all
+  -- OCC-30010
+  into analyzer_rules values (  default,
+    'DESCRIPTION_FOR_ALL_DATA_OBJECTS',
+    'All data objects must have a description.',
+    'Describe the data object with more than just a name.',
+    q'{
+    select rule_result_o(table_name, table_type)
+      from dba_tab_comments
+     where owner=:owner
+       and comments is null
+       and table_name not like '%$%'
+    }',
+    null,
+    default,
+    10, 30,
+    1, 3, 
+    'cio',
+    default, default, null, null)
+  -- OCC-40010
+  into analyzer_rules values (  default,
+    'PARAMETER_NAMING_RULE',
+    'IN parameters must start with Prefix P.',
+    'All parameter (IN, OUT or INOUT) has to have the appropriate prefix.',
+    q'{
+    select rule_result_o(object_name, object_type, subobject_name, subobject_type, argument_name, 'PARAMETER')
+      from (
+      select nvl(a.package_name,a.object_name)||case when a.overload is not null and a.object_name is null then '['||a.overload||']' end as object_name,
+             o.object_type,
+             nvl2(a.package_name,a.object_name||case when a.overload is not null then '['||a.overload||']' end,null) as subobject_name,
+             nvl2(a.package_name,
+                  decode(min(a.position) over (partition by a.object_id, a.object_name),
+                    0,'PROCEDURE',1,'FUNCTION','unknown'),
+                  null) as subobject_type,
+             a.in_out,
+             a.argument_name
+        from dba_arguments a
+        join dba_objects o 
+          on (a.object_id=o.object_id and a.owner=o.owner)
+   left join dba_procedures p 
+          on (nvl2(a.package_name,a.object_name,null)=p.procedure_name
+         and o.object_id=p.object_id
+         and a.subprogram_id=p.subprogram_id
+         and a.owner=p.owner)
+       where a.owner=:owner
+         and a.argument_name not like 'P\_%' escape '\'
+order by 1,3, a.position
+    ) where in_out='IN'
+    }',
+    null, default,
+    10, 40, 
+    2, 3,
+    default,
+    default, default, null, null)
+  -- OCC-40020
+  into analyzer_rules values (  default,
+    'MAX_LINE_SIZE',
+    'Code should not exceed 160 characters per line.',
+    'Better readability.',
+    q'{
+    select rule_result_o(name, type, line, length(text))
+      from dba_source
+     where owner=:owner
+       and length(text)>161
+    }', 
+    null, default,
+    20, 40, 
+    1, 3,
+    default,
+    default, default, null, null)
+  -- OCC-79010
+  into analyzer_rules values (  default,
+    'TABLE_COMMENT',
+    'All tables must have a description.',
+    'Describe the table with more than just a name.',
+    q'{
+    select rule_result_o(table_name, table_type)
+      from dba_tab_comments
+     where owner=:owner
+       and comments is null
+       and table_name not like '%$%'
+       and table_type='TABLE'
+    }', 
+    q'{comment on table ":owner.:level1_name" is 'Detailed description can be found in the wiki. Search for ":level1_name".'}',
+    1,
+    10, 79,
+    1, 3, 
+    default,
+    default, default, null, null)
+  -- OCC-80010
+  into analyzer_rules values (  default,
+    'READONLY_CONSTRAINTS_FOR_VIEWS',
+    'All views should have readyonly constraints.',
+    'Avoid DML operations on views.',
+    q'{
+    select rule_result_o(view_name, 'VIEW') from (
+      select view_name from dba_views where owner=:owner
+        minus
+      select table_name from dba_constraints where owner=:owner and constraint_type='O'
+    )
+    }', 
+    q'{select dbms_metadata.get_ddl ('VIEW', :level1_name, :owner)||' with read only constraint "'||substr(:level1_name,1,28)||'_O"' from dual}', 
+    1,
+    10, 80, 
+    2, 7,
+    'cio,demo',
+    default, default, null, null)
+  select 1 from dual;

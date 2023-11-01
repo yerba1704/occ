@@ -1,0 +1,4 @@
+create table sqale_characteristics(
+  scid           number(1,0)       primary key,
+  characteristic varchar2(15 char) not null
+);
