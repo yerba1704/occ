@@ -76,7 +76,7 @@ It is strongly recommended to use the APEX application [occ-apex](https://github
 
 ## Installation
 
-To install __ora* CODECOP__ execute the script `admin_install.sql`. This will create a new user `OCC`, grant all required privileges to that user and grant the `API` package to public.
+To install __ora* CODECOP__ execute the script `admin_install.sql`. This will create a new user `OCC`, grant all required privileges to that user and grant the `API` package to public. You should change the pre-defined environment variables _occ_password_ and _occ_tabespace_ according to your environment.
 
 The `OCC` user receive the following privileges:
 

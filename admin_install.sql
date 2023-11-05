@@ -1,7 +1,7 @@
 clear screen
 
 define occ_password   = ora0CODECOPpassword
-define occ_tablespace = data
+define occ_tablespace = sysaux
 
   /*******************************/
  /** INSTALL ora*CODECOP (OCC) **/
