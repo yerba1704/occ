@@ -1,11 +1,9 @@
 insert all
   into database_objects values (10,'Schema Object'                 ,''                              ,''                              ,'')
   into database_objects values (20,'Nonschema Object'              ,''                              ,''                              ,'')
-  
   into database_objects values (30,''                              ,'SQL Data Object'               ,''                              ,'')
   into database_objects values (40,''                              ,'PL/SQL Unit'                   ,''                              ,'')
   into database_objects values (50,''                              ,'Database Object'               ,''                              ,'')
-  
   into database_objects values (51,'Schema Object'                 ,'SQL Data Object'               ,'Analytic views'                ,'')
   into database_objects values (52,'Schema Object'                 ,'Database Object'               ,'Attribute dimensions'          ,'ATTRIBUTE DIMENSION')
   into database_objects values (53,'Schema Object'                 ,'Database Object'               ,'Clusters'                      ,'CLUSTER')
