@@ -6,7 +6,7 @@ The always free __ora* CODECOP__ is a framework to help you define rules for you
 
 ## Example usage
 
-All existing rules and definitions are available in the `ruleset` view:  
+All existing rules and definitions are available in the `ruleset` view:
 
 `select * from occ.ruleset;`
 
@@ -33,6 +33,14 @@ To check a set of rules (plural) pass either a rule object...
 ..or a tag:
 
 `exec occ.api.check_rules(i_value => 'CIO');`
+
+To adjust the amount of details use a second parameter...
+
+`exec occ.api.check_rules(i_value => OCC.API.MINOR, i_verbose_mode => false);`
+
+...or raise an exception if the check failed:
+
+`exec occ.api.check_rules(i_value => OCC.API.MINOR, i_raise_if_fail => true);`
 
 All existing rules can be checked without passing any  parameter:
 
