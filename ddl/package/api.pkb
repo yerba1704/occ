@@ -163,6 +163,8 @@ create or replace package body api as
     dbms_output.put_line('Finished in '||worker.seconds_since(l_time_beg)||' seconds.');
     dbms_output.put_line(l_arid_c.count||' checks, '||l_fail_cnt||' failed.');
   exception
+    when e_rule_failed then
+      raise_application_error(c_rule_failed,   sys.utl_lms.format_message(g_exception_messages_c(c_rule_failed),   trim( l_details(1) )) );
     when e_invalid_value then
       raise_application_error(c_invalid_value, sys.utl_lms.format_message(g_exception_messages_c(c_invalid_value), c_value) );
     when others then
@@ -229,6 +231,8 @@ create or replace package body api as
 
     return l_out;
   exception
+    when e_rule_failed then
+      raise_application_error(c_rule_failed,   sys.utl_lms.format_message(g_exception_messages_c(c_rule_failed),   trim( l_details(1) )) );
     when e_invalid_value then
       raise_application_error(c_invalid_value, sys.utl_lms.format_message(g_exception_messages_c(c_invalid_value), c_value) );
     when others then
