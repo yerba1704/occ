@@ -109,7 +109,7 @@ If you have an interesting feature in mind, that you would like to see in __ora*
 
 ## Related Resources
 
-[PDF](https://anwenderkonferenz.doag.org/de/home/) from DOAG 2023 presentation.
+[PDF](doc/doag_2023_-_bessere_codequalitaet_mit_ora_codecop.pdf) from DOAG 2023 presentation.
 
 ## License
 
