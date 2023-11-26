@@ -1,4 +1,4 @@
-create or replace type rule_result_o as object (
+create or replace type rule_result_o authid definer as object (
   level1_name   varchar2(128 char),
   level1_type   varchar2(30 char),
   level2_name   varchar2(128 char),

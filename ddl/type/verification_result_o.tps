@@ -1,4 +1,4 @@
-create or replace type verification_result_o as object (
+create or replace type verification_result_o authid definer as object (
   rule_id         varchar2(4000 char),
   object_name     varchar2(128 char),
   object_type     varchar2(30 char),

@@ -41,6 +41,9 @@ These constants are described in the following table.
 |DATABASE_OBJECT
 |_'DATABASE_OBJECT'_
 
+|APEX
+|_'APEX'_
+
 |BLOCKER
 |_'BLOCKER'_
 

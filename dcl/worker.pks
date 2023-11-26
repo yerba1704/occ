@@ -1,6 +1,6 @@
 --> hack to avoid ORA-28702
 --------------------------------------------------------------------------------
-create procedure tmp is
+create procedure tmp authid definer is
 begin
   -- Code Based Access Control (CBAC) 
   execute immediate 'grant select_catalog_role to package occ.worker';

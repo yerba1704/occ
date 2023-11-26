@@ -23,6 +23,7 @@ create or replace package api authid current_user as
   PLSQL_UNIT      constant small_string := 'PLSQL_UNIT';
   SQL_DATA_OBJECT constant small_string := 'SQL_DATA_OBJECT';
   DATABASE_OBJECT constant small_string := 'DATABASE_OBJECT';
+  APEX            constant small_string := 'APEX';
   -- severity level
   BLOCKER         constant small_string := 'BLOCKER';
   CRITICAL        constant small_string := 'CRITICAL';
@@ -69,7 +70,7 @@ create or replace package api authid current_user as
 
   -- Verify all rules that belongs to one of the associated dimension (rule_object, characteristic, severity), a tag or to all defined rules.
   -- @One of the following rule_objects, severities, characteristics:
-  --    PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT 
+  --    PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT, APEX
   --    INFO, MINOR, MAJOR, CRITICAL, BLOCKER
   --    CHANGEABILITY, EFFICIENCY, MAINTAINABILITY,  PORTABILITY,  RELIABILITY,  REUSABILITY,  SECURITY, TESTABILITY
   -- or one of the defined TAGS (case insensitive).

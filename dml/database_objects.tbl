@@ -48,4 +48,5 @@ insert all
   into database_objects values (92,'Nonschema Object'              ,'Database Object'               ,'Tablespace sets'               ,null)
   into database_objects values (93,'Nonschema Object'              ,''                              ,'Unified audit policies'        ,'UNIFIED AUDIT POLICY')
   into database_objects values (94,'Nonschema Object'              ,'Database Object'               ,'Users'                         ,null)
+  into database_objects values (99,''                              ,'APEX'                          ,''                              ,'')
 select 1 from dual;

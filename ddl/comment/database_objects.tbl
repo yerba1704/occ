@@ -4,7 +4,7 @@ comment on table database_objects is
 comment on column database_objects.schema_scope is
   'Nonschema Object or Schema Object.';
 comment on column database_objects.type_classification is
-  'SQL Data Object or PL/SQL Unit.';
+  'SQL Data Object, PL/SQL Unit, Database Object or APEX.';
 comment on column database_objects.documentation_name is
   'Object name according to official online docu (https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Database-Objects.html).';
 comment on column database_objects.dictionary_name is

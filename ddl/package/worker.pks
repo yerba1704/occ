@@ -5,11 +5,11 @@ create or replace package worker authid definer as
     return number;
 
   -- Execute the VERIFICATION_SQL corresponding to ARID.
-  procedure exc(i_arid    in  integer,
-                i_user    in  varchar2,
-                i_indent  in  varchar2,
-                o_results out verification_result_c,
-                o_details out string_c);
+  procedure exc(i_arid    in          integer,
+                i_user    in          varchar2,
+                i_indent  in          varchar2,
+                o_results out nocopy  verification_result_c,
+                o_details out nocopy  string_c);
 
   -- Execute all VERIFICATION_SQL corresponding to the list of ARID and add some user relevant information.
   function exc(

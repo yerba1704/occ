@@ -1,5 +1,9 @@
 create or replace package body worker as
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  c_max_bulk  constant pls_integer:=1000;
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------   
   function seconds_since(i_start_time in timestamp with time zone)
     return number
   is
@@ -15,13 +19,12 @@ create or replace package body worker as
         ,3);
   end seconds_since;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-  procedure exc(i_arid    in  integer,
-                i_user    in  varchar2,
-                i_indent  in  varchar2,
-                o_results out verification_result_c,
-                o_details out string_c )
+  procedure exc(i_arid    in          integer,
+                i_user    in          varchar2,
+                i_indent  in          varchar2,
+                o_results out nocopy  verification_result_c,
+                o_details out nocopy  string_c)
   is
-    c_max_bulk  constant pls_integer:=1000;
     c_time_beg  constant timestamp:=current_timestamp;
     c_arid      constant analyzer_rules.arid%type not null := i_arid;
     c_user_name constant dbms_id_30 not null := i_user;
@@ -141,7 +144,7 @@ create or replace package body worker as
   begin
     open l_cur for c_stmt;
       loop
-        fetch l_cur bulk collect into l_out;
+        fetch l_cur bulk collect into l_out limit c_max_bulk;
         exit when l_cur%notfound;
       end loop;
     close l_cur;
