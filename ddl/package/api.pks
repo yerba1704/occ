@@ -2,19 +2,19 @@ create or replace package api authid current_user as
 
   e_rule_failed exception;
   c_rule_failed constant integer:=-20001;
-	pragma exception_init(e_rule_failed, c_rule_failed);
+  pragma exception_init(e_rule_failed, c_rule_failed);
 
   e_invalid_rule_id exception;
   c_invalid_rule_id constant integer:=-20002;
-	pragma exception_init(e_invalid_rule_id,c_invalid_rule_id);
+  pragma exception_init(e_invalid_rule_id,c_invalid_rule_id);
 
   e_invalid_code exception;
   c_invalid_code constant integer:=-20003;
-	pragma exception_init(e_invalid_code,c_invalid_code);
+  pragma exception_init(e_invalid_code,c_invalid_code);
 
   e_invalid_value exception;
   c_invalid_value constant integer:=-20004;
-	pragma exception_init(e_invalid_value,c_invalid_value);
+  pragma exception_init(e_invalid_value,c_invalid_value);
 
   subtype small_string is string(20 char) not null;
   subtype bool is naturaln range 0..1 not null;

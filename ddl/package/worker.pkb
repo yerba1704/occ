@@ -3,7 +3,7 @@ create or replace package body worker as
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
   c_max_bulk  constant pls_integer:=1000;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------------------------------------------------   
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
   function seconds_since(i_start_time in timestamp with time zone)
     return number
   is
@@ -48,14 +48,23 @@ create or replace package body worker as
       else open l_cur for l_stmt;
     end case;
       loop
-        fetch l_cur bulk collect into l_rule_out limit c_max_bulk;
-        exit when l_cur%notfound;
+--        fetch l_cur bulk collect into l_rule_out limit c_max_bulk;
+--        exit when l_cur%notfound;
+        begin
+          fetch l_cur bulk collect into l_rule_out limit c_max_bulk;
+          exit when l_cur%notfound;
+        exception
+          when others then
+            l_rule_out:=rule_result_c( rule_result_o('{SQL_EXECUTION_ERROR}','{INVALID_SQL}') );
+            exit;
+        end;
       end loop;
     close l_cur;
     
     -- collection initialization
     o_results:=verification_result_c();
-    o_details:=string_c(c_indent||'OCC-'||c_arid||' '||l_rule_cfg.title||' ['||seconds_since(c_time_beg)||' sec]'||case when l_rule_out.count>0 then ' (FAILED)'end);
+    o_details:=string_c(c_indent||'OCC-'||c_arid||' '||l_rule_cfg.title||' ['||seconds_since(c_time_beg)||' sec]'
+             ||case when l_rule_out.count>0 then ' (FAILED)'end);
     
     for i in 1..l_rule_out.count loop
       o_results.extend();
