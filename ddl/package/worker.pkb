@@ -48,8 +48,6 @@ create or replace package body worker as
       else open l_cur for l_stmt;
     end case;
       loop
---        fetch l_cur bulk collect into l_rule_out limit c_max_bulk;
---        exit when l_cur%notfound;
         begin
           fetch l_cur bulk collect into l_rule_out limit c_max_bulk;
           exit when l_cur%notfound;
@@ -87,7 +85,10 @@ create or replace package body worker as
                                                         detail_name => l_rule_out(i).level3_name,
                                                         detail_type => l_rule_out(i).level3_type,
                                                         title => l_rule_cfg.title,
-                                                        fix => case when l_rule_cfg.fix_automation_fl=1 then
+                                                        -- Either a human note or a executable statement like DDL, anonymous block or select statement.
+                                                        fix => case when l_rule_cfg.fix_hint is not null and l_rule_cfg.fix_automation_fl=0 then
+                                                                      l_rule_cfg.fix_hint
+                                                                    when l_rule_cfg.fix_hint is not null and l_rule_cfg.fix_automation_fl=1 then
                                                                       replace(
                                                                         replace(
                                                                           replace(
@@ -96,15 +97,37 @@ create or replace package body worker as
                                                                                 replace(
                                                                                   replace(
                                                                                     replace(
-                                                                                      replace(l_rule_cfg.fix_hint,':owner',c_user_name),
-                                                                                    ':level1_name',l_rule_out(i).level1_name),
-                                                                                  ':level1_type',l_rule_out(i).level1_type),
-                                                                                ':level2_name',l_rule_out(i).level2_name),
-                                                                              ':level2_type',l_rule_out(i).level2_type),
-                                                                            ':level3_name',l_rule_out(i).level3_name),
-                                                                          ':level3_type',l_rule_out(i).level3_type),
-                                                                        ':line_number',l_rule_out(i).line_number),
-                                                                      ':column_number',l_rule_out(i).column_number)
+                                                                                      replace(
+                                                                                        replace(l_rule_cfg.fix_hint,':owner',c_user_name),
+                                                                                      ':level1_name',l_rule_out(i).level1_name),
+                                                                                    ':level1_type',l_rule_out(i).level1_type),
+                                                                                  ':level2_name',l_rule_out(i).level2_name),
+                                                                                ':level2_type',l_rule_out(i).level2_type),
+                                                                              ':level3_name',l_rule_out(i).level3_name),
+                                                                            ':level3_type',l_rule_out(i).level3_type),
+                                                                          ':line_number',l_rule_out(i).line_number),
+                                                                        ':column_number',l_rule_out(i).column_number),
+                                                                      ':fix_hint',l_rule_out(i).fix_hint)
+                                                                    when l_rule_out(i).fix_hint is not null and instr(l_rule_out(i).fix_hint,':')>0 then
+                                                                        replace(
+                                                                          replace(
+                                                                            replace(
+                                                                              replace(
+                                                                                replace(
+                                                                                  replace(
+                                                                                    replace(
+                                                                                      replace(
+                                                                                        replace(l_rule_out(i).fix_hint,':owner',c_user_name),
+                                                                                      ':level1_name',l_rule_out(i).level1_name),
+                                                                                    ':level1_type',l_rule_out(i).level1_type),
+                                                                                  ':level2_name',l_rule_out(i).level2_name),
+                                                                                ':level2_type',l_rule_out(i).level2_type),
+                                                                              ':level3_name',l_rule_out(i).level3_name),
+                                                                            ':level3_type',l_rule_out(i).level3_type),
+                                                                          ':line_number',l_rule_out(i).line_number),
+                                                                        ':column_number',l_rule_out(i).column_number)
+                                                                    when l_rule_out(i).fix_hint is not null then
+                                                                      l_rule_out(i).fix_hint
                                                               end );
 
       o_details.extend();

@@ -7,24 +7,28 @@ create or replace type rule_result_o authid definer as object (
   level3_type   varchar2(30 char),
   line_number   integer,
   column_number integer,
+  fix_hint      varchar2(4000 char),
   constructor function rule_result_o (
       self          in out nocopy rule_result_o,
       i_level1_name in varchar2,
-      i_level1_type in varchar2)
+      i_level1_type in varchar2,
+      i_fix_hint    in varchar2 default null)
     return self as result,
   constructor function rule_result_o (
       self            in out nocopy rule_result_o,
       i_level1_name   in varchar2,
       i_level1_type   in varchar2,
       i_line_number   in integer,
-      i_column_number in integer)
+      i_column_number in integer,
+      i_fix_hint    in varchar2 default null)
     return self as result,
   constructor function rule_result_o (
       self          in out nocopy rule_result_o,
       i_level1_name in varchar2,
       i_level1_type in varchar2,
       i_level2_name in varchar2,
-      i_level2_type in varchar2)
+      i_level2_type in varchar2,
+      i_fix_hint    in varchar2 default null)
     return self as result,
   constructor function rule_result_o (
       self            in out nocopy rule_result_o,
@@ -33,7 +37,8 @@ create or replace type rule_result_o authid definer as object (
       i_level2_name   in varchar2,
       i_level2_type   in varchar2,
       i_line_number   in integer,
-      i_column_number in integer)
+      i_column_number in integer,
+      i_fix_hint    in varchar2 default null)
     return self as result,
   constructor function rule_result_o (
       self          in out nocopy rule_result_o,
@@ -42,7 +47,8 @@ create or replace type rule_result_o authid definer as object (
       i_level2_name in varchar2,
       i_level2_type in varchar2,
       i_level3_name in varchar2,
-      i_level3_type in varchar2)
+      i_level3_type in varchar2,
+      i_fix_hint    in varchar2 default null)
     return self as result
 --TODO member function sqldev link
 );
