@@ -125,7 +125,7 @@ create or replace package body api as
     if c_value is not null then
       case 
         -- rule_objects?
-        when c_value in (PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT) then
+        when c_value in (PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT, APEX) then
           select to_number ( substr(rule_id, - 5) ) bulk collect into l_arid_c from occ.ruleset 
            where upper(replace(replace(rule_object,' ','_'),'/')) = c_value;
         -- severity?
@@ -191,7 +191,7 @@ create or replace package body api as
     if c_value is not null then
       case 
         -- rule_objects?
-        when c_value in (PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT) then
+        when c_value in (PLSQL_UNIT, SQL_DATA_OBJECT, DATABASE_OBJECT, APEX) then
           select to_number ( substr(rule_id, - 5) ) bulk collect into l_arid_c from occ.ruleset 
            where upper(replace(replace(rule_object,' ','_'),'/')) = c_value;
         -- severity?

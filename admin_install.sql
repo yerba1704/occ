@@ -30,7 +30,7 @@ grant create session,
       create type
    to occ;
 
-grant select_catalog_role 
+grant select_catalog_role, apex_administrator_role
    to occ 
  with admin option;
 
@@ -78,6 +78,7 @@ prompt >>> grant permission
 @dcl/worker.pks
 @dcl/public/api.pks
 @dcl/public/ruleset.vw
+@dcl/public/database_objects.tbl
 
 commit;
 

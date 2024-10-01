@@ -4,6 +4,7 @@ create procedure tmp authid definer is
 begin
   -- Code Based Access Control (CBAC) 
   execute immediate 'grant select_catalog_role to package occ.worker';
+  execute immediate 'grant apex_administrator_role to package occ.worker';
 end;
 /
 
