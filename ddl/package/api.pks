@@ -17,7 +17,7 @@ create or replace package api authid current_user as
   pragma exception_init(e_invalid_value,c_invalid_value);
 
   subtype small_string is string(20 char) not null;
-  subtype bool is naturaln range 0..1 not null;
+  subtype bool is naturaln range 0..1;
   
   -- (distinct) type_classifcation
   PLSQL_UNIT      constant small_string := 'PLSQL_UNIT';
